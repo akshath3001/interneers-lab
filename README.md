@@ -337,10 +337,10 @@ urlpatterns = [
 
 ```
 
--`name` and `age` are read from the query string
--Checks `name` shouldn't contain special characters
--Checks `age` to be positive 
--Ouputs an error message when above checks fail
+- `name` and `age` are read from the query string
+- Checks `name` shouldn't contain special characters
+- Checks `age` to be positive 
+- Ouputs an error message when above checks fail
 
 ---
 #### 2. Run the Django Server
