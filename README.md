@@ -306,25 +306,42 @@ Open your Django project’s `urls.py` (or `views.py`, depending on your structu
 
 from django.contrib import admin
 from django.urls import path
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
+import re
+
+def special_char(s):
+    regex = re.compile('[@_!#$%^&*()<>?/\|}{~:]')
+    return bool(regex.search(s))
+
+# def hello_world(request):
+#     return HttpResponse("Hello, world! This is our interneers-lab Django server.")
 
 def hello_name(request):
-    """
-    A simple view that returns 'Hello, {name}' in JSON format.
-    Uses a query parameter named 'name'.
-    """
-    # Get 'name' from the query string, default to 'World' if missing
-    name = request.GET.get("name", "World")
-    return JsonResponse({"message": f"Hello, {name}!"})
+    # Get 'name' and 'age' from the query string
+    name=request.GET.get("name", "World")
+    age=request.GET.get("age", None)
+    if special_char(name):
+        return JsonResponse({"error": "Invalid name. Name can't contain special characters"})
+    if not age:
+        return JsonResponse({"message": f"Hell0, {name}! Your age is unknown"}) 
+    elif int(age)<0:
+        return JsonResponse({"error": "Invalid age. Age can't be -ve"})
+    
+    return JsonResponse({"message": f"Hell0, {name}! Your age is {age}"}) 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('hello/', hello_name), 
-    # Example usage: /hello/?name=Bob
-    # returns {"message": "Hello, Bob!"}
+    # path('hello/', hello_world),
+    path('hello/', hello_name),
 ]
 
 ```
+
+-`name` and `age` are read from the query string
+-Checks `name` shouldn't contain special characters
+-Checks `age` to be positive 
+-Ouputs an error message when above checks fail
+
 ---
 #### 2. Run the Django Server
 
@@ -393,6 +410,61 @@ Send the request. You should see a JSON response:
 cd backend
 python manage.py test
 ```
+1. **Valid inputs given** 
+```
+Endpoint: http://127.0.0.1:8001/hello/?name=Bob&age=21
+```
+```
+{
+    "message": "Hell0, Bob! Your age is 21"
+}
+```
+Ensures correct output with both values
+
+2. **Missing age parameter**
+```
+Endpoint: http://127.0.0.1:8001/hello/?name=Bob
+```
+```
+{
+    "message": "Hell0, Bob! Your age is unknown"
+}
+```
+Output mentions age as unknown 
+
+3. **Both parameters are missing**
+```
+Endpoint: http://127.0.0.1:8001/hello/
+```
+```
+{
+    "message": "Hell0, World! Your age is unknown"
+}
+```
+Output mentions default name(World) and age as unknown 
+
+4. **Name contains special characters**
+```
+Endpoint: http://127.0.0.1:8001/hello/name=@#Bob
+```
+```
+{
+    "error": "Invalid name. Name can't contain special characters"
+}
+```
+Ensures an error message
+
+5. **Negative age is given**
+```
+Endpoint: http://127.0.0.1:8001/hello/?name=Bob&age=-20
+```
+```
+{
+    "error": "Invalid age. Age can't be -ve"
+}
+```
+Ensures an error message
+
 
 ### Docker
 ```
@@ -425,9 +497,3 @@ Head over to the frontend README to check it out:
 - However, never commit secrets (API keys, passwords) directly. Use environment variables or .env files (excluded via .gitignore).
 
 ---
-
-
-
-
-
-
