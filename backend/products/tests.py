@@ -1,7 +1,7 @@
 from django.test import TestCase
 from rest_framework.test import APITestCase
 from rest_framework import status
-from .models import Product, Category, Brand
+from .models import Product
 
 class ProductAPITestCase(APITestCase):
     def setUp(self):
