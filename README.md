@@ -331,17 +331,12 @@ def hello_name(request):
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # path('hello/', hello_world),
-    path('hello/', hello_name),
+    path('hello/', hello_name), 
+    # Example usage: /hello/?name=Bob
+    # returns {"message": "Hello, Bob!"}
 ]
 
 ```
-
--`name` and `age` are read from the query string
--Checks `name` shouldn't contain special characters
--Checks `age` to be positive 
--Ouputs an error message when above checks fail
-
 ---
 #### 2. Run the Django Server
 
@@ -497,9 +492,3 @@ Head over to the frontend README to check it out:
 - However, never commit secrets (API keys, passwords) directly. Use environment variables or .env files (excluded via .gitignore).
 
 ---
-
-
-
-
-
-
