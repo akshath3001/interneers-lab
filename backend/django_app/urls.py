@@ -1,14 +1,12 @@
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from django.http import HttpResponse, JsonResponse
+import products 
 import re
 
 def special_char(s):
     regex = re.compile('[@_!#$%^&*()<>?/\|}{~:]')
     return bool(regex.search(s))
-
-# def hello_world(request):
-#     return HttpResponse("Hello, world! This is our interneers-lab Django server.")
 
 def hello_name(request):
     # Get 'name' and 'age' from the query string
@@ -25,6 +23,6 @@ def hello_name(request):
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # path('hello/', hello_world),
     path('hello/', hello_name),
+    path('',include('products.urls'))
 ]
