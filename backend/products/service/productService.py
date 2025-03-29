@@ -1,9 +1,13 @@
+import logging
+
 from django.core.paginator import Paginator
 from rest_framework import status
 
-from ..repository.productCategoryRepository import CategoryRepository
+from ..repository.categoryRepository import CategoryRepository
 from ..repository.productRepository import ProductRepository
 from ..serializers import ProductSerializer
+
+logger = logging.getLogger(__name__)
 
 
 class ProductService:
@@ -51,7 +55,7 @@ class ProductService:
     def create_product(data):
         serializer = ProductSerializer(data=data)
         if not serializer.is_valid():
-            return {"data": serializer.errors, "status": 400}
+            return {"data": serializer.errors, "status": status.HTTP_400_BAD_REQUEST}
 
         validated_data = serializer.validated_data
         category_names = validated_data.pop("product_category", [])
@@ -70,6 +74,19 @@ class ProductService:
         }
 
     @staticmethod
+    def get_filtered_products(filters, page, page_size):
+        products = ProductRepository.get_filtered(filters)
+        paginator = Paginator(products, page_size)
+        serialized_products = ProductSerializer(paginator.page(page), many=True).data
+        return {
+            "data": {
+                "message": "Products based on applied filters retrieved",
+                "products": serialized_products,
+            },
+            "status": status.HTTP_200_OK,
+        }
+
+    @staticmethod
     def update_product(product_id, data):
         product = ProductRepository.get_by_id(product_id)
         if not product:
@@ -80,7 +97,8 @@ class ProductService:
                 },
                 "status": status.HTTP_404_NOT_FOUND,
             }
-        serializer = ProductSerializer(product, data=data, partial=True)
+
+        serializer = ProductSerializer(data=data, partial=True)
         if not serializer.is_valid():
             return {"data": serializer.errors, "status": status.HTTP_400_BAD_REQUEST}
 
@@ -117,3 +135,86 @@ class ProductService:
             },
             "status": status.HTTP_200_OK,
         }
+
+    @staticmethod
+    def add_product_to_category(category_id, product_id):
+        category = CategoryRepository.get_by_id(category_id)
+        product = ProductRepository.get_by_id(product_id)
+
+        if not category or not product:
+            return {
+                "data": {
+                    "message": "Category or Product not found",
+                    "category_id": str(category_id),
+                    "product_id": str(product_id),
+                },
+                "status": status.HTTP_404_NOT_FOUND,
+            }
+
+        if category in product.product_category:
+            return {
+                "data": {"message": "Product already in category"},
+                "status": status.HTTP_400_BAD_REQUEST,
+            }
+        category_data = product.product_category
+        category_data.append(category)
+        ProductRepository.update_category(product, category_data)
+        return {
+            "data": {"message": "Product added to category successfully"},
+            "status": status.HTTP_200_OK,
+        }
+
+    @staticmethod
+    def remove_product_from_category(category_id, product_id):
+        category = CategoryRepository.get_by_id(category_id)
+        product = ProductRepository.get_by_id(product_id)
+
+        if not category or not product:
+            return {
+                "data": {
+                    "message": "Category or Product not found",
+                    "category_id": str(category_id),
+                    "product_id": str(product_id),
+                },
+                "status": status.HTTP_404_NOT_FOUND,
+            }
+
+        if category not in product.product_category:
+            return {
+                "data": {"message": "Product is not in the category"},
+                "status": status.HTTP_400_BAD_REQUEST,
+            }
+        category_data = product.product_category.remove(category)
+        ProductRepository.update_category(product, category_data)
+        return {
+            "data": {"message": "Product removed from category successfully"},
+            "status": status.HTTP_200_OK,
+        }
+
+    @staticmethod
+    def migrate_products_without_category(category_id):
+        products_without_category = ProductRepository.get_by_category(category=None)
+        if not products_without_category:
+            logger.info("No products need category migration.")
+        else:
+            for product in products_without_category:
+                ProductService.add_product_to_category(
+                    category_id=category_id,
+                    product_id=product.product_id,
+                )
+                logger.info(
+                    f"Assigned default category to product: {product.product_name}"
+                )
+
+    @staticmethod
+    def migrate_products_without_brands(DEFAULT_BRAND):
+        products_without_brand = ProductRepository.get_by_brand(brand=None)
+
+        if not products_without_brand:
+            logger.info("No products need brand migration.")
+        else:
+            for product in products_without_brand:
+                ProductRepository.update_brand(DEFAULT_BRAND)
+                logger.info(
+                    f"Assigned default brand to product: {product.product_name}"
+                )

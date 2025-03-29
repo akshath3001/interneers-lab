@@ -13,9 +13,22 @@ class ProductPagination(PageNumberPagination):
 
 class ProductListController(APIView, ProductPagination):
     def get(self, request):
-        page = int(request.GET.get("page", 1))
-        page_size = int(request.GET.get("page_size", ProductPagination.page_size))
-        response = ProductService.get_all_products(page, page_size)
+        page = int(request.GET.get("page", "1"))
+        page_size = int(request.GET.get("page_size", "3"))
+
+        filters = {
+            "product_name": request.GET.get("product_name"),
+            "product_brand": request.GET.get("product_brand"),
+            "categories": request.GET.getlist("categories"),
+            "min_price": request.GET.get("min_price"),
+            "max_price": request.GET.get("max_price"),
+            "min_quantity": request.GET.get("min_quantity"),
+            "max_quantity": request.GET.get("max_quantity"),
+        }
+        if any(filters.values()):
+            response = ProductService.get_filtered_products(filters, page, page_size)
+        else:
+            response = ProductService.get_all_products(page, page_size)
         return Response(response["data"], status=response["status"])
 
     def post(self, request):
