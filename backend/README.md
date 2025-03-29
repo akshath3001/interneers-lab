@@ -3,12 +3,7 @@ This API provides product management functionality, including product creation r
 
 ---
 
-## Table of Contents
 
-1. [Getting Started with Git & Forking](#getting-started-with-git-and-forking)
-2.
-
----
 
 ## Model
 
@@ -16,7 +11,8 @@ This API provides product management functionality, including product creation r
 Represents a product category
 ```
 {
-  "category_name": "StringField - the name of category"
+  "category_name": "StringField - the name of category",
+  "category_description": "StringField - description about a category"
 }
 ```
 ### Product
