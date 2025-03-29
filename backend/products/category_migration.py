@@ -17,10 +17,8 @@ DEFAULT_BRAND = {"product_brand": "Unbranded"}
 
 def migrate_existing_products():
     try:
-        category_details, category_id = CategoryService.create_category(
-            DEFAULT_CATEGORY
-        )
-
+        response = CategoryService.create_category(DEFAULT_CATEGORY)
+        category_id = response["data"]["category_id"]
         ProductService.migrate_products_without_category(category_id)
 
         ProductService.migrate_products_without_brands(DEFAULT_BRAND)

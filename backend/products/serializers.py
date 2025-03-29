@@ -31,8 +31,3 @@ class ProductSerializer(serializers.Serializer):
         if value < 0:
             raise serializers.ValidationError("Product quantity can't be negative")
         return value
-
-    # def validate_product_brand(self, value):
-    #     if not value.strip():
-    #         raise serializers.ValidationError("Product brand is required")
-    #     return value

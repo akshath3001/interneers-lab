@@ -200,7 +200,7 @@ class ProductService:
             for product in products_without_category:
                 ProductService.add_product_to_category(
                     category_id=category_id,
-                    product_id=product.product_id,
+                    product_id=product.id,
                 )
                 logger.info(
                     f"Assigned default category to product: {product.product_name}"
@@ -214,7 +214,7 @@ class ProductService:
             logger.info("No products need brand migration.")
         else:
             for product in products_without_brand:
-                ProductRepository.update_brand(DEFAULT_BRAND)
+                ProductRepository.update_brand(product, DEFAULT_BRAND)
                 logger.info(
                     f"Assigned default brand to product: {product.product_name}"
                 )

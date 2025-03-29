@@ -14,7 +14,7 @@ class ProductRepository:
 
     @staticmethod
     def get_by_category(category):
-        return Product.objects(product_category__in=[None, []])
+        return Product.objects(product_category__size=0)
 
     @staticmethod
     def get_by_brand(brand):
