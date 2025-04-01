@@ -86,6 +86,7 @@ connect(
     username="aks",
     password="aks@3001",
     authentication_source="admin",
+    uuidRepresentation="standard",
 )
 
 

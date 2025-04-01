@@ -2,7 +2,7 @@ import logging
 
 from django.db.utils import OperationalError
 
-from .service.categoryService import CategoryService
+from products.service.categoryService import CategoryService
 
 logger = logging.getLogger(__name__)
 

@@ -74,6 +74,43 @@ class ProductService:
         }
 
     @staticmethod
+    def create_products(data_list):
+        if not isinstance(data_list, list):
+            return {
+                "data": {"error": "Invalid data format. Expected a list."},
+                "status": status.HTTP_400_BAD_REQUEST,
+            }
+
+        product_details = []
+        errors = []
+
+        for data in data_list:
+            serializer = ProductSerializer(data=data)
+            if not serializer.is_valid():
+                errors.append(serializer.errors)
+            validated_data = serializer.validated_data
+            category_names = validated_data.pop("product_category", [])
+            categories = CategoryRepository.get_or_create(category_names)
+
+            product, product_id = ProductRepository.create(validated_data, categories)
+            serialized_product = ProductSerializer(product).data
+
+            product_details.append(
+                {"product_id": str(product_id), "product": serialized_product}
+            )
+
+        if errors:
+            return {"data": {"errors": errors}, "status": status.HTTP_400_BAD_REQUEST}
+
+        return {
+            "data": {
+                "message": "Products created successfully",
+                "products": product_details,
+            },
+            "status": status.HTTP_201_CREATED,
+        }
+
+    @staticmethod
     def get_filtered_products(filters, page, page_size):
         products = ProductRepository.get_filtered(filters)
         paginator = Paginator(products, page_size)
