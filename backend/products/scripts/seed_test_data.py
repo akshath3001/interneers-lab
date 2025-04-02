@@ -1,14 +1,20 @@
-import mongoengine
 import logging
 
-
+import mongoengine
 from products.service.categoryService import CategoryService
 from products.service.productService import ProductService
 
 logger = logging.getLogger(__name__)
 
+mongoengine.disconnect()
 mongoengine.connect(
-    "test_db", host="mongodb://aks:aks%403001@localhost:27018/test_db?authSource=admin"
+    db="test_db",
+    host="mongodb://aks:aks%403001@localhost:27018/test_db?authSource=admin",
+    username="aks",
+    password="aks@3001",
+    authentication_source="admin",
+    uuidRepresentation="standard",
+    alias="default",
 )
 
 CATEGORIES = [
@@ -46,13 +52,11 @@ PRODUCTS = [
 
 
 def seed_categories():
-    categories_details = CategoryService.create_categories(CATEGORIES)
-    logger.info(categories_details)
+    CategoryService.create_categories(CATEGORIES)
 
 
 def seed_products():
-    products_details = ProductService.create_products(PRODUCTS)
-    logger.info(products_details)
+    ProductService.create_products(PRODUCTS)
 
 
 def seed_test_db():
@@ -61,5 +65,5 @@ def seed_test_db():
     print("Test data seeded successfully")
 
 
-# if __name__ == "__main__":
-#     run()
+if __name__ == "__main__":
+    seed_test_db()

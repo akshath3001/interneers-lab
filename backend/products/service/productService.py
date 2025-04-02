@@ -198,7 +198,7 @@ class ProductService:
         ProductRepository.update_category(product, category_data)
         return {
             "data": {"message": "Product added to category successfully"},
-            "status": status.HTTP_200_OK,
+            "status": status.HTTP_201_CREATED,
         }
 
     @staticmethod
@@ -221,7 +221,8 @@ class ProductService:
                 "data": {"message": "Product is not in the category"},
                 "status": status.HTTP_400_BAD_REQUEST,
             }
-        category_data = product.product_category.remove(category)
+        category_data = product.product_category
+        category_data.remove(category)
         ProductRepository.update_category(product, category_data)
         return {
             "data": {"message": "Product removed from category successfully"},
