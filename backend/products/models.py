@@ -1,5 +1,5 @@
 import datetime
-import os
+
 from mongoengine import (
     DateTimeField,
     DecimalField,
