@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+import sys
 from pathlib import Path
 
 from mongoengine import connect
@@ -86,7 +87,32 @@ connect(
     username="aks",
     password="aks@3001",
     authentication_source="admin",
+    uuidRepresentation="standard",
 )
+
+# MAIN_DB_ALIAS = "default"
+# TEST_DB_ALIAS = "test_alias"
+# # Main database
+# connect(
+#     db="interneers_lab_mongodb",
+#     host="mongodb://aks:aks%403001@localhost:27018/interneers_lab_mongodb?authSource=admin",
+#     username="aks",
+#     password="aks@3001",
+#     authentication_source="admin",
+#     uuidRepresentation="standard",
+#     alias=MAIN_DB_ALIAS,
+# )
+
+# # Test database
+# connect(
+#     db="test_db",
+#     host="mongodb://aks:aks%403001@localhost:27018/test_db?authSource=admin",
+#     username="aks",
+#     password="aks@3001",
+#     authentication_source="admin",
+#     uuidRepresentation="standard",
+#     alias=TEST_DB_ALIAS,
+# )
 
 
 # Password validation
@@ -158,3 +184,6 @@ LOGGING = {
         },
     },
 }
+if "test" in sys.argv:
+    DATABASES = {}  # Completely disable SQL databases for testing
+    TEST_RUNNER = "django.test.runner.DiscoverRunner"  # Avoids migrations
