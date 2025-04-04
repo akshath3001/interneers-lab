@@ -1,3 +1,1 @@
-import django
-
-django.setup()
+ 
