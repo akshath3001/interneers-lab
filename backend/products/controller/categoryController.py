@@ -12,7 +12,7 @@ class CategoryController(APIView):
             response = CategoryService.get_category_products(category_id)
         else:
             response = CategoryService.get_category(category_id)
-        return Response(response["data"], status=response["status"])
+        return Response(data=response["data"], status=response["status"])
 
     def post(self, request):
         response = CategoryService.create_category(request.data)
@@ -20,7 +20,7 @@ class CategoryController(APIView):
 
     def put(self, request, category_id):
         response = CategoryService.update_category(category_id, request.data)
-        return Response(response["data"], status=response["status"])
+        return Response(data=response["data"], status=response["status"])
 
     def delete(self, request, category_id):
         response = CategoryService.delete_category(category_id)
