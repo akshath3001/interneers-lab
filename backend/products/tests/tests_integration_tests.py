@@ -1,10 +1,12 @@
-import mongoengine
-import sys
-from django.test import TestCase
-import subprocess
-from products.models import Category, Product
-from rest_framework import status
 import logging
+import subprocess
+import sys
+
+import mongoengine
+from django.test import TestCase
+from rest_framework import status
+
+from products.models import Category, Product
 
 logger = logging.getLogger(__name__)
 
@@ -91,88 +93,6 @@ class IntegrationTests(TestCase):
             "category_name": "Books",
             "category_description": "Educational and leisure books",
         }
-
-    # @classmethod
-    # def setUpClass(cls):
-    #     super().setUpClass()
-    #     if "test" in sys.argv:
-    #         mongoengine.disconnect()
-    #         mongoengine.connect(
-    #             db="test_db",
-    #             host="mongodb://aks:aks%403001@localhost:27018/test_db?authSource=admin",
-    #             username="aks",
-    #             password="aks@3001",
-    #             authentication_source="admin",
-    #             uuidRepresentation="standard",
-    #             alias="test_alias",
-    #         )
-    #         print("Connected to `test_db` for integration testing")
-    #         try:
-    #             logger.info("Using test database for seeding.")
-
-    #             from products.scripts.seed_test_data import seed_test_db
-
-    #             logger.info("Running test seed script for test database...")
-    #             seed_test_db()
-    #             logger.info(
-    #                 "Test seed script completed successfully for test database."
-    #             )
-
-    #         except subprocess.CalledProcessError as e:
-    #             print(f"Failed to run seed script: {e}")
-
-    #     cls.product1 = {
-    #         "product_name": "MacBook Pro M3",
-    #         "product_category": ["Laptop", "Electronics"],
-    #         "product_description": "Latest MacBook Pro with M3 chip",
-    #         "product_price": "200000.00",
-    #         "product_brand": "Apple",
-    #         "product_quantity": 3,
-    #     }
-    #     cls.product2 = {
-    #         "product_name": "Galaxy Tab S9",
-    #         "product_category": ["Tablet", "Electronics"],
-    #         "product_description": "Samsung's latest high-end tablet",
-    #         "product_price": "90000.00",
-    #         "product_brand": "Samsung",
-    #         "product_quantity": 6,
-    #     }
-    #     cls.product3 = {
-    #         "product_name": "Sony WH-1000XM5",
-    #         "product_category": ["Headphones", "Electronics"],
-    #         "product_description": "Top noise-canceling wireless headphones",
-    #         "product_price": "30000.00",
-    #         "product_brand": "Sony",
-    #         "product_quantity": 10,
-    #     }
-    #     cls.product4 = {
-    #         "product_name": "LG OLED C3",
-    #         "product_category": ["TV", "Electronics"],
-    #         "product_description": "OLED 4K Smart TV with AI Processor",
-    #         "product_price": "150000.00",
-    #         "product_brand": "LG",
-    #         "product_quantity": 2,
-    #     }
-    #     cls.product5 = {
-    #         "product_name": "Canon EOS R6 Mark II",
-    #         "product_category": ["Camera", "Electronics"],
-    #         "product_description": "Professional mirrorless camera",
-    #         "product_price": "250000.00",
-    #         "product_brand": "Canon",
-    #         "product_quantity": 3,
-    #     }
-    #     cls.category1 = {
-    #         "category_name": "Electronics",
-    #         "category_description": "Gadgets and devices",
-    #     }
-    #     cls.category2 = {
-    #         "category_name": "Clothing",
-    #         "category_description": "Apparel and fashion",
-    #     }
-    #     cls.category3 = {
-    #         "category_name": "Books",
-    #         "category_description": "Educational and leisure books",
-    #     }
 
     @classmethod
     def tearDownClass(cls):
