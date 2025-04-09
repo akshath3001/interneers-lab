@@ -1,0 +1,117 @@
+body {
+  font-family: sans-serif;
+  background-color: #f0f2f5;
+  padding: 40px;
+  text-align: center;
+}
+
+#product-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  padding: 20px;
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(1.1);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.product-tile {
+  width: 300px;
+  margin: 0 auto;
+  background-color: #a3a6f3;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  padding: 15px;
+  margin: 20px;
+  box-sizing: border-box;
+  transform: scale(1.5); 
+  animation: scaleIn 0.4s ease forwards;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+.product-tile:hover {
+  transform: translateY(-8px) scale(1.2);
+  box-shadow: 0 4px 16px rgb(0, 0, 0);
+  background-color: #787ce7;
+}
+
+.product-image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.product-name {
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.product-price {
+  color: #28a745;
+  margin: 10px 0;
+  font-size: 1.1rem;
+}
+
+.product-description {
+  color: #666;
+  font-size: 0.95rem;
+}
+
+.btn {
+  position: relative;
+  font-size: 12px;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 1em 2.5em;
+  display: inline-block;
+  cursor: pointer;
+  border-radius: 6em;
+  transition: all 0.2s;
+  border: none;
+  font-family: inherit;
+  font-weight: 500;
+  color: black;
+  background-color: white;
+}
+
+.btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.btn:active {
+  transform: translateY(-1px);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.btn::after {
+  content: "";
+  display: inline-block;
+  height: 100%;
+  width: 100%;
+  border-radius: 100px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  transition: all 0.4s;
+}
+
+.btn::after {
+  background-color: #fff;
+}
+
+.btn:hover::after {
+  transform: scaleX(1.4) scaleY(1.6);
+  opacity: 0;
+}

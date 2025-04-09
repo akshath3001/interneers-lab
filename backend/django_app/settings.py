@@ -10,14 +10,17 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
-import sys
+import os
 from pathlib import Path
 
+from dotenv import load_dotenv
 from mongoengine import connect
+
+load_dotenv()
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -30,9 +33,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
-
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -42,7 +43,9 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "products",
     "rest_framework",
+    "corsheaders",
 ]
+
 REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": 2,
@@ -56,7 +59,12 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
 ]
+
+# Done temporarily for dev purposes
+CORS_ALLOW_ALL_ORIGINS = True
 
 ROOT_URLCONF = "django_app.urls"
 
@@ -78,42 +86,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "django_app.wsgi.application"
 
-
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 connect(
-    db="interneers_lab_mongodb",
-    host="mongodb://aks:aks%403001@localhost:27018/interneers_lab_mongodb?authSource=admin",
-    username="aks",
-    password="aks@3001",
-    authentication_source="admin",
-    uuidRepresentation="standard",
+    host=os.getenv("MONGO_HOST"),
+    alias="default",
 )
-
-# MAIN_DB_ALIAS = "default"
-# TEST_DB_ALIAS = "test_alias"
-# # Main database
-# connect(
-#     db="interneers_lab_mongodb",
-#     host="mongodb://aks:aks%403001@localhost:27018/interneers_lab_mongodb?authSource=admin",
-#     username="aks",
-#     password="aks@3001",
-#     authentication_source="admin",
-#     uuidRepresentation="standard",
-#     alias=MAIN_DB_ALIAS,
-# )
-
-# # Test database
-# connect(
-#     db="test_db",
-#     host="mongodb://aks:aks%403001@localhost:27018/test_db?authSource=admin",
-#     username="aks",
-#     password="aks@3001",
-#     authentication_source="admin",
-#     uuidRepresentation="standard",
-#     alias=TEST_DB_ALIAS,
-# )
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -133,7 +111,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
@@ -144,7 +121,6 @@ TIME_ZONE = "UTC"
 USE_I18N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
@@ -184,6 +160,3 @@ LOGGING = {
         },
     },
 }
-if "test" in sys.argv:
-    DATABASES = {}  # Completely disable SQL databases for testing
-    TEST_RUNNER = "django.test.runner.DiscoverRunner"  # Avoids migrations

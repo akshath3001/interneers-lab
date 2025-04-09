@@ -22,11 +22,13 @@ class ProductService:
                 "status": status.HTTP_404_NOT_FOUND,
             }
         paginator = Paginator(products, page_size)
-        serialized_products = ProductSerializer(paginator.page(page), many=True).data
+        paginated_products = paginator.page(page)
+        serialized_products = ProductSerializer(paginated_products, many=True).data
         return {
             "data": {
                 "message": "Products retrieved successfully",
                 "product": serialized_products,
+                "num_pages": paginator.num_pages,
             },
             "status": status.HTTP_200_OK,
         }

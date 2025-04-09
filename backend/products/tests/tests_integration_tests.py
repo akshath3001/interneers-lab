@@ -1,4 +1,5 @@
 import logging
+import os
 import subprocess
 import sys
 
@@ -19,12 +20,7 @@ class IntegrationTests(TestCase):
         if "tests" in sys.argv:
             mongoengine.disconnect()
             mongoengine.connect(
-                db="test_db",
-                host="mongodb://aks:aks%403001@localhost:27018/test_db?authSource=admin",
-                username="aks",
-                password="aks@3001",
-                authentication_source="admin",
-                uuidRepresentation="standard",
+                host=os.getenv("MONGO_TEST_HOST"),
                 alias="test_alias",
             )
             print("Connected to test_db for integration testing")
