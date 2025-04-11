@@ -1,5 +1,6 @@
 import logging
 import os
+
 import mongoengine
 from django.apps import AppConfig
 from django.db.utils import OperationalError
@@ -12,19 +13,13 @@ class ProductsConfig(AppConfig):
     name = "products"
 
     def ready(self):
-        ## doing this(os.environ check) to prevent double execution of seed scripts
+        # doing this(os.environ check) to prevent double execution of seed scripts
         if os.environ.get("RUN_MAIN") == "true":
             try:
-                # if os.environ.get("USE_TEST_DB", "false") == "false":
                 logger.info("Using main database for seeding.")
                 mongoengine.disconnect()
                 mongoengine.connect(
-                    db="interneers_lab_mongodb",
-                    host="mongodb://aks:aks%403001@localhost:27018/interneers_lab_mongodb?authSource=admin",
-                    username="aks",
-                    password="aks@3001",
-                    authentication_source="admin",
-                    uuidRepresentation="standard",
+                    host=os.getenv("MONGO_HOST"),
                     alias="default",
                 )
 
