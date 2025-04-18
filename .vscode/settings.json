@@ -1,9 +1,9 @@
 {
     "editor.formatOnSave": true,
-    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+    "editor.defaultFormatter": "charliermarsh.ruff",
     "eslint.format.enable": true,
     "files.autoSave": "afterDelay",
-    "eslint.run": "onSave",
+    "eslint.run": "onSave",    
     "[json]": {
         "editor.defaultFormatter": "vscode.json-language-features"
     },
