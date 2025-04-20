@@ -1,23 +1,21 @@
 import React from "react";
 import "./Header.css";
-
+import { Outlet, Link } from "react-router-dom";
 const NavBar: React.FC = () => {
   return (
     <nav className="nav-bar">
       <ul>
         <li>
-          <a href="#">Home</a>
+          <Link to="/">Home</Link>
         </li>
         <li>
-          <a href="#">Products</a>
+          <Link to="/products">Product List</Link>
         </li>
         <li>
-          <a href="#">About</a>
-        </li>
-        <li>
-          <a href="#">Contact</a>
+          <Link to="/Category">Catgory</Link>
         </li>
       </ul>
+      <Outlet />
     </nav>
   );
 };

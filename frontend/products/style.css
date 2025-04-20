@@ -26,7 +26,6 @@ body {
 
 .product-tile {
   width: 300px;
-  margin: 0 auto;
   background-color: #a3a6f3;
   border-radius: 12px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -102,9 +101,6 @@ body {
   left: 0;
   z-index: -1;
   transition: all 0.4s;
-}
-
-.btn::after {
   background-color: #fff;
 }
 

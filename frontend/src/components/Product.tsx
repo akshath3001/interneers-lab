@@ -1,45 +1,53 @@
 import React from "react";
 import "./Product.css";
 
-interface ProductProps {
-  product: {
-    product_name: string;
-    product_category: string[];
-    product_description: string;
-    product_price: number;
-    product_brand: string;
-    product_quantity: number;
-  };
-  isExpanded: boolean;
-  onClick: () => void;
+interface Category {
+  category_name: string;
+  category_description: string;
 }
 
-const Product: React.FC<ProductProps> = ({ product, isExpanded, onClick }) => {
+export interface ProductType {
+  product_id: string;
+  product_name: string;
+  category: Category[];
+  product_description: string;
+  product_price: number;
+  product_brand: string;
+  product_quantity: number;
+}
+
+interface ProductProps {
+  product: ProductType;
+}
+
+const Product: React.FC<ProductProps> = ({ product }) => {
   return (
-    <div
-      className={`product-card ${isExpanded ? "expanded" : ""}`}
-      onClick={onClick}
-    >
-      <h2>{product.product_name}</h2>
-      <p>
-        <strong>Price:</strong> Rs. {product.product_price}
-      </p>
-      {isExpanded && (
+    <div className="product-card">
+      <details>
+        <summary>
+          <h3>{product.product_name}</h3>
+          <span className="bold-text">Price:</span> Rs. {product.product_price}
+        </summary>
         <div className="product-details">
           <p>
-            <strong>Brand:</strong> {product.product_brand}
+            <span className="bold-text">Brand:</span> {product.product_brand}
           </p>
           <p>
-            <strong>Categories:</strong> {product.product_category.join(", ")}
+            <span className="bold-text">Categories:</span>{" "}
+            {product.category
+              .map((category, i) => category.category_name)
+              .join(", ")}
           </p>
           <p>
-            <strong>Description:</strong> {product.product_description}
+            <span className="bold-text">Description:</span>{" "}
+            {product.product_description}
           </p>
           <p>
-            <strong>In Stock:</strong> {product.product_quantity}
+            <span className="bold-text">In Stock:</span>{" "}
+            {product.product_quantity}
           </p>
         </div>
-      )}
+      </details>
     </div>
   );
 };

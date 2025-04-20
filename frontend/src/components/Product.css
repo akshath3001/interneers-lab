@@ -13,7 +13,9 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
   padding: 20px;
   align-self: start;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  transition:
+    background-color 0.3s ease,
+    transform 0.2s ease;
   cursor: pointer;
   border: 1px solid #d1d9e6;
 }
@@ -23,23 +25,11 @@
   transform: translateY(-2px);
 }
 
-.product-card.expanded {
-  background-color: #d4ebff;
-  border-color: #93c5fd;
-}
-
-.product-card h2 {
-  font-size: 18px;
-  margin-bottom: 8px;
-}
-
-.product-card p {
-  margin: 4px 0;
-  font-size: 14px;
-}
-
 .product-details {
   margin-top: 12px;
   color: #333;
   font-size: 13px;
+}
+.bold-text {
+  font-weight: bold;
 }
