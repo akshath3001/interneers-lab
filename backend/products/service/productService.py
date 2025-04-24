@@ -63,13 +63,12 @@ class ProductService:
         category_names = validated_data.pop("product_category", [])
         categories = CategoryRepository.get_or_create(category_names)
 
-        product, product_id = ProductRepository.create(validated_data, categories)
+        product = ProductRepository.create(validated_data, categories)
         serialized_product = ProductSerializer(product).data
 
         return {
             "data": {
                 "message": "Product created successfully",
-                "product_id": str(product_id),
                 "product": serialized_product,
             },
             "status": status.HTTP_201_CREATED,
@@ -94,11 +93,14 @@ class ProductService:
             category_names = validated_data.pop("product_category", [])
             categories = CategoryRepository.get_or_create(category_names)
 
-            product, product_id = ProductRepository.create(validated_data, categories)
+            product = ProductRepository.create(validated_data, categories)
             serialized_product = ProductSerializer(product).data
 
             product_details.append(
-                {"product_id": str(product_id), "product": serialized_product}
+                {
+                    "product_id": str(serialized_product["product_id"]),
+                    "product": serialized_product,
+                }
             )
 
         if errors:

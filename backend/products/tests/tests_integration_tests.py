@@ -24,6 +24,9 @@ class IntegrationTests(TestCase):
                 alias="test_alias",
             )
             print("Connected to test_db for integration testing")
+            Product._meta["db_alias"] = "test_alias"
+            Category._meta["db_alias"] = "test_alias"
+            print("Connected to test DB using alias 'test_alias'")
         try:
             logger.info("Using test database for seeding.")
 

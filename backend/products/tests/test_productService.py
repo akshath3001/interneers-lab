@@ -62,13 +62,12 @@ class TestProductService(unittest.TestCase):
     def test_create_product_success(
         self, mock_data, mock_validated_data, mock_is_valid, mock_create
     ):
-        mock_create.return_value = (MagicMock(), "123")
+        mock_create.return_value = MagicMock()
         response = ProductService.create_product(
             {"product_name": "Laptop", "product_price": "1000.00"}
         )
         self.assertEqual(response["status"], status.HTTP_201_CREATED)
         self.assertEqual(response["data"]["message"], "Product created successfully")
-        self.assertEqual(response["data"]["product_id"], "123")
 
     # Testing create_product to return the error message when the endpoint
     # fails to create the product to due serializer error(missing required fields)

@@ -2,11 +2,13 @@ from rest_framework import serializers
 
 
 class CategorySerializer(serializers.Serializer):
+    category_id = serializers.CharField(source="id", read_only=True)
     category_name = serializers.CharField(max_length=100)
     category_description = serializers.CharField(max_length=200)
 
 
 class ProductSerializer(serializers.Serializer):
+    product_id = serializers.CharField(source="id", read_only=True)
     product_name = serializers.CharField(max_length=100)
     product_category = serializers.ListField(
         child=serializers.CharField(), write_only=True

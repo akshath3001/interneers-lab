@@ -26,28 +26,24 @@ body {
 
 .product-tile {
   width: 300px;
-  margin: 0 auto;
   background-color: #a3a6f3;
   border-radius: 12px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   padding: 15px;
   margin: 20px;
   box-sizing: border-box;
-  transform: scale(1.5); 
+  transform: scale(1.5);
   animation: scaleIn 0.4s ease forwards;
-  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    background-color 0.3s ease;
 }
 
 .product-tile:hover {
   transform: translateY(-8px) scale(1.2);
   box-shadow: 0 4px 16px rgb(0, 0, 0);
   background-color: #787ce7;
-}
-
-.product-image {
-  width: 100%;
-  height: auto;
-  border-radius: 8px;
 }
 
 .product-name {
@@ -105,9 +101,6 @@ body {
   left: 0;
   z-index: -1;
   transition: all 0.4s;
-}
-
-.btn::after {
   background-color: #fff;
 }
 

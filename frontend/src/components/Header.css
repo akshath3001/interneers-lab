@@ -1,0 +1,33 @@
+.app-header {
+  background-color: #8cabda;
+  padding: 20px 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.app-header h1 {
+  margin: 0;
+  font-size: 28px;
+}
+
+.nav-bar {
+  margin-top: 15px;
+}
+
+.nav-bar ul {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-bar li a {
+  color: #000000;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.nav-bar li a:hover {
+  color: white;
+}

@@ -81,7 +81,6 @@ class TestProductService(TestCase):
                     "product_brand": "Dell",
                 },
                 True,
-                "123",
                 status.HTTP_201_CREATED,
                 "Product created successfully",
             ),
@@ -93,7 +92,6 @@ class TestProductService(TestCase):
                     "product_brand": "",
                 },
                 False,
-                None,
                 status.HTTP_400_BAD_REQUEST,
                 {
                     "product_name": ["This field may not be blank."],
@@ -108,7 +106,6 @@ class TestProductService(TestCase):
                     "product_brand": "Dell",
                 },
                 False,
-                None,
                 status.HTTP_400_BAD_REQUEST,
                 {"product_price": ["A valid number is required."]},
             ),
@@ -122,7 +119,6 @@ class TestProductService(TestCase):
         self,
         input_data,
         is_valid,
-        created_id,
         expected_status,
         expected_message,
         mock_product_serializer_1,
@@ -159,7 +155,7 @@ class TestProductService(TestCase):
             mock_product.product_category = [mock_category_1]
             mock_product.product_brand = input_data["product_brand"]
 
-            mock_create.return_value = (mock_product, created_id)
+            mock_create.return_value = mock_product
             mock_product_serializer_2.return_value.data = (
                 mock_serializer_instance_2.data
             )
@@ -170,7 +166,6 @@ class TestProductService(TestCase):
 
         if is_valid:
             self.assertEqual(response["data"]["message"], expected_message)
-            self.assertEqual(response["data"]["product_id"], created_id)
             self.assertEqual(
                 response["data"]["product"]["product_name"],
                 mock_serializer_instance_2.data["product_name"],
