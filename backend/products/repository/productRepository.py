@@ -52,7 +52,7 @@ class ProductRepository:
         product = Product(**validated_data)
         product.product_category = categories
         product.save()
-        return product, str(product.id)
+        return product
 
     @staticmethod
     def update(product, updated_data, categories):

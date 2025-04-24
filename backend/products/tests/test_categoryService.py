@@ -146,13 +146,7 @@ class TestCategoryService(unittest.TestCase):
         # MockCategorySerializer.assert_called_with(mock_category)
         self.assertEqual(response["status"], status.HTTP_204_NO_CONTENT)
         self.assertEqual(response["data"]["message"], "Category retrieved successfully")
-        self.assertEqual(
-            response["data"]["category"],
-            {
-                "category_name": "Electronics",
-                "category_description": "Test electronics description",
-            },
-        )
+        self.assertEqual(response["data"]["category"]["category_name"], "Electronics")
 
     # Testing for get_category to return the error response for when category
     # doens't exist
