@@ -18,15 +18,25 @@ export interface ProductType {
 
 interface ProductProps {
   product: ProductType;
+  onDelete: () => void;
+  onEdit: () => void;
 }
 
-const Product: React.FC<ProductProps> = ({ product }) => {
+const Product: React.FC<ProductProps> = ({ product, onDelete, onEdit }) => {
   return (
     <div className="product-card">
       <details>
         <summary>
           <h3>{product.product_name}</h3>
           <span className="bold-text">Price:</span> Rs. {product.product_price}
+          <div className="product-actions">
+            <button className="edit-btn" onClick={onEdit}>
+              Edit
+            </button>
+            <button className="delete-btn" onClick={onDelete}>
+              Delete
+            </button>
+          </div>
         </summary>
         <div className="product-details">
           <p>
