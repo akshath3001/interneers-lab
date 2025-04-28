@@ -14,27 +14,32 @@ const ProductForm: React.FC = () => {
     product_quantity: 0,
     category: [],
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
+    let isCurrentRequest = true;
     const fetchProduct = async () => {
       if (id) {
         try {
           const response = await fetch(`http://127.0.0.1:8000/products/${id}`);
           const data = await response.json();
-
-          const { product_id, product_category, ...rest } = data;
-
-          setFormState({
-            ...rest,
-            category: product_category || [],
-          });
+          if (isCurrentRequest) {
+            const { product_id, product_category, ...rest } = data;
+            setFormState({
+              ...rest,
+              category: product_category || [],
+            });
+          }
         } catch (error) {
           console.error("Error fetching product:", error);
         }
       }
     };
-
     fetchProduct();
+
+    return () => {
+      isCurrentRequest = false;
+    };
   }, [id]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,7 +47,7 @@ const ProductForm: React.FC = () => {
     setFormState((prev) => ({
       ...prev,
       [name]:
-        name.includes("product_price") || name.includes("product_quantity")
+        name === "product_price" || name === "product_quantity"
           ? Number(value)
           : value,
     }));
@@ -72,7 +77,7 @@ const ProductForm: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+    setIsSubmitting(true);
     const formattedProduct = {
       ...formState,
       product_category: formState.category.map((cat) => cat.category_name),
@@ -189,8 +194,14 @@ const ProductForm: React.FC = () => {
       </div>
 
       <div className="form-actions">
-        <button className="form-button" type="submit">
-          {id ? "Update" : "Create"}
+        <button className="form-button" type="submit" disabled={isSubmitting}>
+          {isSubmitting
+            ? id
+              ? "Updating..."
+              : "Creating..."
+            : id
+              ? "Update"
+              : "Create"}
         </button>
         <button
           className="form-button"
