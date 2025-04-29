@@ -1,7 +1,11 @@
 from django.urls import path
 
 from .controller.productController import ProductController, ProductListController
-from .controller.categoryController import CategoryController, CategoryProductController
+from .controller.categoryController import (
+    CategoryController,
+    CategoryProductController,
+    CategoryListController,
+)
 
 urlpatterns = [
     # product paths
@@ -10,7 +14,7 @@ urlpatterns = [
     # category paths
     path(
         "category/",
-        CategoryController.as_view(),
+        CategoryListController.as_view(),
         name="category",
     ),
     path(

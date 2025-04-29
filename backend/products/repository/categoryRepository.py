@@ -3,6 +3,10 @@ from ..models import Category, Product
 
 class CategoryRepository:
     @staticmethod
+    def get_all():
+        return Category.objects.all()
+
+    @staticmethod
     def get_or_create(category_names):
         categories = []
         for category_name in category_names:

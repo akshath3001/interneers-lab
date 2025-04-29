@@ -1,8 +1,37 @@
+from django.core.paginator import EmptyPage
+from rest_framework import status
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from ..service.categoryService import CategoryService
 from ..service.productService import ProductService
+
+
+class ProductPagination(PageNumberPagination):
+    page_size = 3
+    page_size_query_param = "page_size"
+    max_page_size = 10
+
+
+class CategoryListController(APIView, ProductPagination):
+    def get(self, request):
+        try:
+            page = int(request.GET.get("page", "1"))
+            page_size = int(request.GET.get("page_size", "3"))
+            response = CategoryService.get_all_category(page, page_size)
+            return Response(response["data"], status=response["status"])
+        except EmptyPage:
+            return Response(
+                {
+                    "message": "Category doesn't exists",
+                },
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+    def post(self, request):
+        response = CategoryService.create_category(request.data)
+        return Response(response["data"], status=response["status"])
 
 
 class CategoryController(APIView):
