@@ -70,7 +70,7 @@ const ProductForm: React.FC = () => {
       ...prev,
       category: [
         ...prev.category,
-        { category_name: "", category_description: "" },
+        { category_id: "", category_name: "", category_description: "" },
       ],
     }));
   };

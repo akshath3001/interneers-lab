@@ -12,7 +12,7 @@ const NavBar: React.FC = () => {
           <Link to="/products">Product List</Link>
         </li>
         <li>
-          <Link to="/Category">Catgory</Link>
+          <Link to="/Category">Category List</Link>
         </li>
       </ul>
       <Outlet />

@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator
 from rest_framework import status
 
 from ..repository.categoryRepository import CategoryRepository
@@ -5,6 +6,28 @@ from ..serializers import CategorySerializer, ProductSerializer
 
 
 class CategoryService:
+    @staticmethod
+    def get_all_category(page, page_size):
+        categories = CategoryRepository.get_all()
+        if not categories.count():
+            return {
+                "data": {
+                    "message": "Category doesn't exists",
+                },
+                "status": status.HTTP_404_NOT_FOUND,
+            }
+        paginator = Paginator(categories, page_size)
+        paginated_categories = paginator.page(page)
+        serialized_categories = CategorySerializer(paginated_categories, many=True).data
+        return {
+            "data": {
+                "message": "Categories retrieved successfully",
+                "category": serialized_categories,
+                "num_pages": paginator.num_pages,
+            },
+            "status": status.HTTP_200_OK,
+        }
+
     @staticmethod
     def get_category_products(category_id):
         category = CategoryRepository.get_by_id(category_id)
